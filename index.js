@@ -90,10 +90,13 @@ function countEmails(str) {
   const email = new RegExp(
     /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g
   );
-  let zbig = str.matchAll(email);
+  let zbig = str.match(email);
 
-  let result = Array.from(zbig);
-  return result.length;
+  //   let result = Array.from(zbig);
+  //   return result.length;
+  //or
+  let count = zbig ? zbig.length : 0;
+  return count;
   // Створення регулярного виразу для пошуку email-адрес /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g.
   // Використання методу `match` для отримання всіх збігів регулярного виразу.
   // Підрахунок кількості email-адрес.
@@ -120,11 +123,11 @@ function findWordOccurrences(str, word) {
   let reg = new RegExp(word, "gi");
   let matches = [];
   let match;
-  while ((match = reg.exec(str) !== null)) {
-    match = matches.push(match.index);
+  while ((match = reg.exec(str))) {
+    matches.push(match.index);
     reg.lastIndex = match.index + 1;
-    return matches;
   }
+  return matches;
 
   // Створення регулярного виразу для пошуку слова з флагами 'g та 'i',
   // Створюємо пустий масив matches, та змінну match без значення
@@ -155,12 +158,10 @@ console.log(
  * Повертає  - true, якщо флаги 'g' та 'm' присутні, інакше - false.
  */
 function checkRegexFlags(regex) {
-  let reg = new RegExp(regex, "gims");
-  if (reg.global || reg / multiline) {
-    return true;
-  } else {
-    return false;
-  }
+  let reg = regex.flags;
+  let hasGlobal = reg.includes("g");
+  let hasMulti = reg.includes("m");
+  return hasGlobal && hasMulti;
   // Отримуємо всі флаги регулярного виразу.
   // Перевіряємо наявність флагів 'g' та 'm' за допомогою методу `includes`.
   // Повертаємо  - true, якщо флаги 'g' та 'm' присутні, інакше - false
@@ -212,13 +213,13 @@ console.log(
  * Повертає  - Масив флагів, які використовуються у регулярному виразі.
  */
 function checkFlags(regex) {
-  //   let mas = [];
-  //   if (regex.ignoreCase) {
-  //     mas = mas.push("i");
-  //   }
-  //   let result = regex.source;
-  //   mas.push(result);
-  //   return mas;
+  let mas = [];
+  if (regex.ignoreCase) {
+    mas.push("ignoreCase");
+  }
+  let result = regex.source;
+  mas.push(result);
+  return mas;
   // Створюємо масив для зберігання використаних флагів.
   // Перевіряємо, чи використовується флаг 'i' (ignoreCase) у регулярному виразі.
   // Додаємо флаг ignoreCase до масиву, якщо він використовується.
